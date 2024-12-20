@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: JustDb
+    environment:
+      POSTGRES_USER: exam_project
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: ExamProject
+    ports:
+      - "5555:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
