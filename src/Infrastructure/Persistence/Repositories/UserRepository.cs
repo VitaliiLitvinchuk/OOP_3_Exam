@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class UserRepository<T>(ExamDbContext context) : IUserQueries<T>, IUserRepository<T> where T : User
+public class UserRepository(ExamDbContext context) : IUserQueries, IUserRepository
 {
     private readonly DbSet<User> _users = context.Users;
 
-    public async Task<T> Create(T user, CancellationToken cancellationToken)
+    public async Task<User> Create(User user, CancellationToken cancellationToken)
     {
         await _users.AddAsync(user, cancellationToken);
 
@@ -17,7 +17,7 @@ public class UserRepository<T>(ExamDbContext context) : IUserQueries<T>, IUserRe
         return user;
     }
 
-    public async Task<T> Delete(T user, CancellationToken cancellationToken)
+    public async Task<User> Delete(User user, CancellationToken cancellationToken)
     {
         _users.Remove(user);
 
@@ -26,7 +26,7 @@ public class UserRepository<T>(ExamDbContext context) : IUserQueries<T>, IUserRe
         return user;
     }
 
-    public async Task<T> Update(T user, CancellationToken cancellationToken)
+    public async Task<User> Update(User user, CancellationToken cancellationToken)
     {
         _users.Update(user);
 
@@ -35,13 +35,13 @@ public class UserRepository<T>(ExamDbContext context) : IUserQueries<T>, IUserRe
         return user;
     }
 
-    public async Task<T?> GetUserById(UserId id, CancellationToken cancellationToken)
+    public async Task<User?> GetUserById(UserId id, CancellationToken cancellationToken)
     {
-        return await _users.OfType<T>().FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        return await _users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> GetUsers(CancellationToken cancellationToken)
+    public async Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken)
     {
-        return await _users.OfType<T>().ToListAsync(cancellationToken);
+        return await _users.ToListAsync(cancellationToken);
     }
 }

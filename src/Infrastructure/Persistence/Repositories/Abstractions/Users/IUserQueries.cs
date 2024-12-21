@@ -2,8 +2,8 @@ using Domain.Models.Users;
 
 namespace Infrastructure.Persistence.Repositories.Abstractions.Users;
 
-public interface IUserQueries<T> where T : User
+public interface IUserQueries
 {
-    Task<T?> GetUserById(UserId id, CancellationToken cancellationToken);
-    Task<IEnumerable<T>> GetUsers(CancellationToken cancellationToken);
+    Task<User?> GetUserById(UserId id, CancellationToken cancellationToken);
+    Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken);
 }

@@ -21,10 +21,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(x => x.RoleId)
             .HasConstraintName("FK_Users_Roles_RoleId")
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasDiscriminator<string>("UserType")
-            .HasValue<User>(nameof(User))
-            .HasValue<Admin>(nameof(Admin))
-            .HasValue<Guest>(nameof(Guest));
     }
 }

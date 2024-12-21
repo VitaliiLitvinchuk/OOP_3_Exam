@@ -33,7 +33,7 @@ var host = Host.CreateDefaultBuilder(args)
     .Build();
 
 // using var scope = host.Services.CreateScope();
-// var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository<User>>();
+// var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
 // var adminRoleId = (await scope.ServiceProvider.GetRequiredService<IRoleQueries>().GetRoleByName("Admin", CancellationToken.None)).Id;
 // var admin = User.New(UserId.New(), "AdminName", adminRoleId);
 

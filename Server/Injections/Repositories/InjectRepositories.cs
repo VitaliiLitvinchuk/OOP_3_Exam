@@ -13,8 +13,9 @@ public static class InjectRepositories
         services.AddScoped<IRoleRepository>(provider => provider.GetRequiredService<RoleRepository>());
         services.AddScoped<IRoleQueries>(provider => provider.GetRequiredService<RoleRepository>());
 
-        services.AddScoped(typeof(IUserRepository<>), typeof(UserRepository<>));
-        services.AddScoped(typeof(IUserQueries<>), typeof(UserRepository<>));
+        services.AddScoped<UserRepository>();
+        services.AddScoped<IUserRepository>(provider => provider.GetRequiredService<UserRepository>());
+        services.AddScoped<IUserQueries>(provider => provider.GetRequiredService<UserRepository>());
 
         return services;
     }

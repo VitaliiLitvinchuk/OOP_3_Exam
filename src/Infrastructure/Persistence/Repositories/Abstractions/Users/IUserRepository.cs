@@ -2,9 +2,9 @@ using Domain.Models.Users;
 
 namespace Infrastructure.Persistence.Repositories.Abstractions.Users;
 
-public interface IUserRepository<T> where T : User
+public interface IUserRepository
 {
-    Task<T> Create(T user, CancellationToken cancellationToken);
-    Task<T> Update(T user, CancellationToken cancellationToken);
-    Task<T> Delete(T user, CancellationToken cancellationToken);
+    Task<User> Create(User user, CancellationToken cancellationToken);
+    Task<User> Update(User user, CancellationToken cancellationToken);
+    Task<User> Delete(User user, CancellationToken cancellationToken);
 }
