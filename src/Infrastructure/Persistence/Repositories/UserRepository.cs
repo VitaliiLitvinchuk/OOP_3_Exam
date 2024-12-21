@@ -37,11 +37,17 @@ public class UserRepository(ExamDbContext context) : IUserQueries, IUserReposito
 
     public async Task<User?> GetUserById(UserId id, CancellationToken cancellationToken)
     {
-        return await _users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        return await _users
+            .Include(u => u.Role)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<User>> GetUsers(CancellationToken cancellationToken)
     {
-        return await _users.ToListAsync(cancellationToken);
+        return await _users
+            .Include(u => u.Role)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 }

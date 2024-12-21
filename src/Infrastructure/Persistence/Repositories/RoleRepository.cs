@@ -37,16 +37,22 @@ public class RoleRepository(ExamDbContext context) : IRoleRepository, IRoleQueri
 
     public async Task<Role?> GetRoleById(RoleId id, CancellationToken cancellationToken)
     {
-        return await _roles.FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+        return await _roles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 
     public async Task<Role?> GetRoleByName(string name, CancellationToken cancellationToken)
     {
-        return await _roles.FirstOrDefaultAsync(r => r.Name == name, cancellationToken);
+        return await _roles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Name == name, cancellationToken);
     }
 
     public async Task<IEnumerable<Role>> GetRoles(CancellationToken cancellationToken)
     {
-        return await _roles.ToListAsync(cancellationToken);
+        return await _roles
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 }
