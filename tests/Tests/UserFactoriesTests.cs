@@ -1,8 +1,6 @@
 using Application.Factories.Users;
-using Application.Managers;
 using Domain.Models.Roles;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tests.Common;
 using Xunit;
@@ -21,14 +19,14 @@ public class UserFactoriesTests(TestFactory factory) : BaseTest(factory), IAsync
     [Fact]
     public async Task ShouldCreateUser()
     {
-        const string testName = "John Wick";
+        const string TestName = "John Wick User";
 
         // Arrange & Act
-        var user = await _userFactory.CreateUser(testName, CancellationToken.None);
+        var user = await _userFactory.CreateUser(TestName, CancellationToken.None);
 
         // Assert
         user.Should().NotBeNull();
-        user.Name.Should().Be(testName);
+        user.Name.Should().Be(TestName);
 
         user.RoleId.Should().Be(_roles.First(r => r.Name == Enum.GetName(typeof(Roles), Roles.User)).Id);
     }
@@ -36,28 +34,28 @@ public class UserFactoriesTests(TestFactory factory) : BaseTest(factory), IAsync
     [Fact]
     public async Task ShouldCreateGuestUser()
     {
-        const string testName = "John Wick";
+        const string TestName = "John Wick Guest";
 
         // Arrange & Act
-        var user = await _guestFactory.CreateUser(testName, CancellationToken.None);
+        var user = await _guestFactory.CreateUser(TestName, CancellationToken.None);
 
         // Assert
         user.Should().NotBeNull();
-        user.Name.Should().Be(testName);
+        user.Name.Should().Be(TestName);
         user.RoleId.Should().Be(_roles.First(r => r.Name == Enum.GetName(typeof(Roles), Roles.Guest)).Id);
     }
 
     [Fact]
     public async Task ShouldCreateAdminUser()
     {
-        const string testName = "John Wick";
+        const string TestName = "John Wick Admin";
 
         // Arrange & Act
-        var user = await _adminFactory.CreateUser(testName, CancellationToken.None);
+        var user = await _adminFactory.CreateUser(TestName, CancellationToken.None);
 
         // Assert
         user.Should().NotBeNull();
-        user.Name.Should().Be(testName);
+        user.Name.Should().Be(TestName);
         user.RoleId.Should().Be(_roles.First(r => r.Name == Enum.GetName(typeof(Roles), Roles.Admin)).Id);
     }
 

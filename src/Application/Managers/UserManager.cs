@@ -1,6 +1,7 @@
 using Application.Loggers.Abstractions;
 using Domain.Models.Users;
 using Infrastructure.Persistence.Repositories.Abstractions.Users;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Managers;
 
@@ -41,8 +42,10 @@ public class UserManager
     // Nullable ignored for simplicity
     public static UserManager Instance { get; private set; }
 
-    public static void Initialize(IUserQueries queries, IUserRepository repository, ILogger logger)
+    public static void Initialize(IServiceProvider provider)
     {
+        var logger = provider.GetRequiredService<ILogger>();
+
         logger.Log(InfoMessages[0]);
 
         if (Instance != null)
@@ -54,7 +57,11 @@ public class UserManager
             throw new Exception(errorMessage);
         }
 
-        new UserManager(queries, repository, logger);
+        new UserManager(
+            provider.GetRequiredService<IUserQueries>(),
+            provider.GetRequiredService<IUserRepository>(),
+            logger
+        );
     }
 
     private UserManager(IUserQueries queries, IUserRepository repository, ILogger logger)

@@ -1,6 +1,7 @@
 using Application.Loggers.Abstractions;
 using Domain.Models.Roles;
 using Infrastructure.Persistence.Repositories.Abstractions.Roles;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Managers;
 
@@ -41,8 +42,10 @@ public class RoleManager
     // Nullable ignored for simplicity
     public static RoleManager Instance { get; private set; }
 
-    public static void Initialize(IRoleQueries roleQueries, IRoleRepository roleRepository, ILogger logger)
+    public static void Initialize(IServiceProvider provider)
     {
+        var logger = provider.GetRequiredService<ILogger>();
+
         logger.Log(InfoMessages[0]);
 
         if (Instance != null)
@@ -54,7 +57,10 @@ public class RoleManager
             throw new Exception(errorMessage);
         }
 
-        new RoleManager(roleQueries, roleRepository, logger);
+        new RoleManager(
+            provider.GetRequiredService<IRoleQueries>(),
+            provider.GetRequiredService<IRoleRepository>(),
+            logger);
     }
 
     private RoleManager(IRoleQueries roleQueries, IRoleRepository roleRepository, ILogger logger)
