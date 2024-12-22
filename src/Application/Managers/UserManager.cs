@@ -84,7 +84,7 @@ public class UserManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while creating the user", ex);
+            throw;
         }
     }
 
@@ -113,7 +113,7 @@ public class UserManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while updating the user role", ex);
+            throw;
         }
     }
 
@@ -131,7 +131,7 @@ public class UserManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while updating the user", ex);
+            throw;
         }
     }
 
@@ -149,7 +149,7 @@ public class UserManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while deleting the user", ex);
+            throw;
         }
     }
 
@@ -167,7 +167,7 @@ public class UserManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while retrieving the user", ex);
+            throw;
         }
     }
 
@@ -185,7 +185,7 @@ public class UserManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while retrieving the users", ex);
+            throw;
         }
     }
 }

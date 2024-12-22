@@ -1,49 +1,60 @@
 ﻿using Application.Managers;
 using Domain.Models.Roles;
-using Infrastructure.Persistence;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Server.Injections;
-using Server.Modules;
 
-string directoryPath = AppDomain.CurrentDomain.BaseDirectory;
-string jsonFileName = Directory.GetFiles(directoryPath, "*.json").First();
+namespace Server;
 
-var host = Host.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration((context, config) =>
-    {
-        config.AddJsonFile(jsonFileName, optional: false, reloadOnChange: true);
-    })
-    .ConfigureLogging(logging =>
-    {
-        logging.ClearProviders();
-    })
-    .ConfigureServices((context, services) =>
-    {
-        var configuration = context.Configuration;
-
-        services.AddPersistence(configuration);
-
-        services.AddInjections();
-    })
-    .Build();
-
-await host.InitializeDb();
-
-using var scope = host.Services.CreateScope();
-
-var manager = scope.ServiceProvider.GetRequiredService<RoleManager>();
-
-IEnumerable<Role> roles;
-
-while (Console.ReadLine() != "e")
+class Program
 {
-    roles = await manager.GetRoles(CancellationToken.None);
-    foreach (var role in roles)
+    static async Task Main(string[] args)
     {
-        Console.WriteLine($"Role: {role.Name}");
+        // IHost host = await HostCreator.CreateHost(args);
+
+        // using var scope = host.Services.CreateScope();
+
+        // var manager = scope.ServiceProvider.GetRequiredService<RoleManager>();
+
+        // IEnumerable<Role> roles;
+
+        // do
+        // {
+        //     roles = await manager.GetRoles(CancellationToken.None);
+        //     foreach (var role in roles)
+        //     {
+        //         Console.WriteLine($"Role: {role.Name}");
+        //     }
+        //     Console.WriteLine("Press 'e' to exit or any other key to display roles again.");
+        // } while (Console.ReadLine() != "e");
+
+        IHost host = await HostCreator.CreateHost(args);
+
+        using var scope = host.Services.CreateScope();
+
+        var manager = scope.ServiceProvider.GetRequiredService<RoleManager>();
+
+        Role role = Role.New(RoleId.New(), "NewRole1");
+
+        await manager.CreateRole(role, CancellationToken.None);
+
+        IEnumerable<Role> roles = await manager.GetRoles(CancellationToken.None);
+
+        foreach (var r in roles)
+        {
+            Console.WriteLine($"Role: {r.Name}");
+        }
+
+        Console.WriteLine("Press 'e' to exit or any other key to delete the created role.");
+        if (Console.ReadLine() != "e")
+        {
+            await manager.DeleteRole(role, CancellationToken.None);
+        }
+
+        roles = await manager.GetRoles(CancellationToken.None);
+
+        foreach (var r in roles)
+        {
+            Console.WriteLine($"Role: {r.Name}");
+        }
     }
-    Console.WriteLine("Press 'e' to exit or any other key to display roles again.");
 }

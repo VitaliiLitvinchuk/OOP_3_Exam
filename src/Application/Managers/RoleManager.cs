@@ -84,7 +84,7 @@ public class RoleManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while trying to get the role by id", ex);
+            throw;
         }
     }
 
@@ -102,7 +102,7 @@ public class RoleManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while trying to get the role by name", ex);
+            throw;
         }
     }
 
@@ -120,7 +120,7 @@ public class RoleManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while trying to get the roles", ex);
+            throw;
         }
     }
 
@@ -149,7 +149,7 @@ public class RoleManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while trying to create the role", ex);
+            throw;
         }
     }
 
@@ -180,7 +180,7 @@ public class RoleManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while trying to update the role", ex);
+            throw;
         }
     }
 
@@ -198,7 +198,7 @@ public class RoleManager
         catch (Exception ex)
         {
             await _logger.LogError(ex.Message);
-            throw new Exception("An error occurred while trying to delete the role", ex);
+            throw;
         }
     }
 }
