@@ -1,10 +1,11 @@
+using System.Collections;
 using Domain.Models.Roles;
 using Infrastructure.Persistence.Repositories.Abstractions.Roles;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class RoleRepository(ExamDbContext context) : IRoleRepository, IRoleQueries
+public class RoleRepository(ExamDbContext context) : IRoleRepository, IRoleQueries, IEnumerable<Role>
 {
     private readonly DbSet<Role> _roles = context.Roles;
 
@@ -54,5 +55,15 @@ public class RoleRepository(ExamDbContext context) : IRoleRepository, IRoleQueri
         return await _roles
             .AsNoTracking()
             .ToListAsync(cancellationToken);
+    }
+
+    public IEnumerator<Role> GetEnumerator()
+    {
+        return _roles.AsEnumerable().GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -1,10 +1,11 @@
+using System.Collections;
 using Domain.Models.Users;
 using Infrastructure.Persistence.Repositories.Abstractions.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class UserRepository(ExamDbContext context) : IUserQueries, IUserRepository
+public class UserRepository(ExamDbContext context) : IUserQueries, IUserRepository, IEnumerable<User>
 {
     private readonly DbSet<User> _users = context.Users;
 
@@ -49,5 +50,15 @@ public class UserRepository(ExamDbContext context) : IUserQueries, IUserReposito
             .Include(u => u.Role)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
+    }
+
+    public IEnumerator<User> GetEnumerator()
+    {
+        return _users.AsEnumerable().GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
